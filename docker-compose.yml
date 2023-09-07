@@ -1,0 +1,47 @@
+version: '3'
+services:
+  nginx:
+    depends_on:
+      - backend
+      - frontend
+    restart: always
+    build:
+      dockerfile: Dockerfile
+      context: ./nginx
+    ports:
+      - '3050:80'
+    volumes:
+      - backend_data:/backend_data
+  postgres:
+    image: 'postgres:latest'
+    environment:
+      - POSTGRES_PASSWORD=postgres_password
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data/
+  backend:
+    build:
+      dockerfile: Dockerfile
+      context: ./backend
+    ports:
+      - "8000:8000"
+    restart: always
+    entrypoint: ./docker-entrypoint.sh
+    command: uwsgi --ini uwsgi.ini
+    volumes:
+      - backend_data:/app
+    depends_on:
+      - postgres
+  frontend:
+    build:
+      dockerfile: Dockerfile
+      context: ./frontend
+    ports:
+      - "3000:3000"
+    volumes:
+      - /app/node_modules
+      - ./frontend:/app
+volumes:
+  backend_data:
+  pgdata:
