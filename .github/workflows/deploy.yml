@@ -10,16 +10,16 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - run: docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
-      - run: docker build -t chingwen/react-test -f ./frontend/Dockerfile.dev ./frontend
-      - run: docker run -e CI=true chingwen/react-test npm test
+      - run: docker build -t cwcan/react-test -f ./frontend/Dockerfile.dev ./frontend
+      - run: docker run -e CI=true cwcan/react-test npm test
 
-      - run: docker build -t chingwen/explorer-frontend ./frontend
-      - run: docker build -t chingwen/explorer-backend ./backend
-      - run: docker build -t chingwen/explorer-nginx ./nginx
+      - run: docker build -t cwcan/explorer-frontend ./frontend
+      - run: docker build -t cwcan/explorer-backend ./backend
+      - run: docker build -t cwcan/explorer-nginx ./nginx
 
-      - run: docker push chingwen/explorer-frontend
-      - run: docker push chingwen/explorer-backend
-      - run: docker push chingwen/explorer-nginx
+      - run: docker push cwcan/explorer-frontend
+      - run: docker push cwcan/explorer-backend
+      - run: docker push cwcan/explorer-nginx
 
       - name: Generate deployment package
         run: zip -r deploy.zip . -x '*.git*'
