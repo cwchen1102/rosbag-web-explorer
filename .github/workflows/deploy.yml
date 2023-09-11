@@ -1,4 +1,4 @@
-name: Build, Test and Deploy Explorer Docker
+name: Deploy Explorer Docker
 on:
   push:
     branches:
@@ -9,23 +9,11 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - run: docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
-      - run: docker build -t cwcan/react-test -f ./frontend/Dockerfile.dev ./frontend
-      - run: docker run -e CI=true cwcan/react-test npm test
-
-      - run: docker build -t cwcan/explorer-frontend ./frontend
-      - run: docker build -t cwcan/explorer-backend ./backend
-      - run: docker build -t cwcan/explorer-nginx ./nginx
-
-      - run: docker push cwcan/explorer-frontend
-      - run: docker push cwcan/explorer-backend
-      - run: docker push cwcan/explorer-nginx
-
       - name: Generate deployment package
         run: zip -r deploy.zip . -x '*.git*'
 
       - name: Deploy to EB
-        uses: einaregilsson/beanstalk-deploy@v18
+        uses: einaregilsson/beanstalk-deploy@v21
         with:
           aws_access_key: ${{ secrets.AWS_ACCESS_KEY }}
           aws_secret_key: ${{ secrets.AWS_SECRET_KEY }}
