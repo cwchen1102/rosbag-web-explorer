@@ -5,25 +5,17 @@ services:
       - backend
       - frontend
     restart: always
-    build:
-      dockerfile: Dockerfile
-      context: ./nginx
+    image: 'cwcan/explorer-nginx'
+    mem_limit: 128m
+    hostname: nginx
     ports:
       - '3050:80'
     volumes:
       - backend_data:/backend_data
-  postgres:
-    image: 'postgres:latest'
-    environment:
-      - POSTGRES_PASSWORD=postgres_password
-    ports:
-      - "5432:5432"
-    volumes:
-      - pgdata:/var/lib/postgresql/data/
   backend:
-    build:
-      dockerfile: Dockerfile
-      context: ./backend
+    image: 'cwcan/explorer-backend'
+    mem_limit: 128m
+    hostname: backend
     ports:
       - "8000:8000"
     restart: always
@@ -37,17 +29,11 @@ services:
       - PGPORT=$PGPORT    
     volumes:
       - backend_data:/app
-    depends_on:
-      - postgres
   frontend:
-    build:
-      dockerfile: Dockerfile
-      context: ./frontend
+    image: 'cwcan/explorer-frontend'
+    mem_limit: 128m
+    hostname: frontend
     ports:
       - "3000:3000"
-    volumes:
-      - /app/node_modules
-      - ./frontend:/app
 volumes:
   backend_data:
-  pgdata:
