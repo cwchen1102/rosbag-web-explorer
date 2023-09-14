@@ -29,6 +29,12 @@ services:
     restart: always
     entrypoint: ./docker-entrypoint.sh
     command: uwsgi --ini uwsgi.ini
+    environment:
+      - PGUSER=$PGUSER
+      - PGHOST=$PGHOST
+      - PGDATABASE=$PGDATABASE
+      - PGPASSWORD=$PGPASSWORD
+      - PGPORT=$PGPORT    
     volumes:
       - backend_data:/app
     depends_on:
