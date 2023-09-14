@@ -17,8 +17,8 @@ jobs:
         with:
           aws_access_key: ${{ secrets.AWS_ACCESS_KEY }}
           aws_secret_key: ${{ secrets.AWS_SECRET_KEY }}
-          application_name: docker-django-react-nginx-uwsgi-postgres
-          environment_name: Docker-django-react-nginx-uwsgi--env
+          application_name: docker-explorer
+          environment_name: Docker-explorer-env
           existing_bucket_name: elasticbeanstalk-us-east-1-549018433513
           region: us-east-1
           version_label: ${{ github.sha }}
