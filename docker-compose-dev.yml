@@ -9,7 +9,7 @@ services:
       dockerfile: Dockerfile.dev
       context: ./nginx
     ports:
-      - '3050:80'
+      - '80:80'
     volumes:
       - backend_data:/backend_data
   postgres:
