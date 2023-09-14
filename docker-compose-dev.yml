@@ -27,7 +27,7 @@ services:
     ports:
       - "8000:8000"
     restart: always
-    entrypoint: ./docker-entrypoint.sh
+    entrypoint: ./docker-entrypoint-dev.sh
     command: uwsgi --ini uwsgi.ini
     environment:
       - PGUSER=postgres
