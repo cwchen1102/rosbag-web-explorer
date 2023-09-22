@@ -45,7 +45,7 @@ function App() {
   };
 
   const exploreFiles = (url, id) => {
-    axios.get(`/api/files/${id}/rosbag`)
+    axios.get(`/api/files/${id}/rosbag/`)
       .then(response => {
         setFileContext(response.data);
         console.log(response.data);
@@ -75,7 +75,7 @@ function App() {
   };
 
   const deleteFiles = (url, id) => {
-    axios.delete(`/api/files/${id}`)
+    axios.delete(`/api/files/${id}/`)
       .then(response => {
         console.log('File delete');
         fetchUploadedFiles();
