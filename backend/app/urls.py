@@ -6,4 +6,5 @@ router = DefaultRouter()
 router.register("files", FileViewSet)
 urlpatterns = [
     path('api/', include(router.urls)),
+    path('api/files/<int:pk>/rosbag/', FileViewSet.as_view({'get': 'rosbag'}), name='rosbag'),
 ]
