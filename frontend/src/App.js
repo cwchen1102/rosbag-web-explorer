@@ -4,10 +4,11 @@ import axios from 'axios';
 function App() {
   const [file, setFile] = useState(null);
   const [uploadedFiles, setUploadedFiles] = useState([]);
+  const [fileContext, setFileContext] = useState({});
 
   useEffect(() => {
     fetchUploadedFiles();
-  },[]);
+  }, []);
 
   const fetchUploadedFiles = async () => {
     try {
@@ -36,11 +37,20 @@ function App() {
         'content-type': 'multipart/form-data'
       }
     })
-    .then(response => {
-      console.log(response.data);
-      fetchUploadedFiles();
-    })
-    .catch(error => console.log(error));
+      .then(response => {
+        console.log(response.data);
+        fetchUploadedFiles();
+      })
+      .catch(error => console.log(error));
+  };
+
+  const exploreFiles = (url, id) => {
+    axios.get(`/api/files/${id}/rosbag`)
+      .then(response => {
+        setFileContext(response.data);
+        console.log(fileContext);
+      })
+      .catch(error => console.log(error));
   };
 
   const downloadFiles = (url, fileName) => {
@@ -49,34 +59,37 @@ function App() {
       url,
       responseType: 'blob'
     })
-    .then(response => {
-      const href = window.URL.createObjectURL(response.data);
-      const anchorElement = document.createElement('a');
-      anchorElement.href = href;
-      anchorElement.download = fileName;
+      .then(response => {
+        const href = window.URL.createObjectURL(response.data);
+        const anchorElement = document.createElement('a');
+        anchorElement.href = href;
+        anchorElement.download = fileName;
 
-      document.body.appendChild(anchorElement);
-      anchorElement.click();
+        document.body.appendChild(anchorElement);
+        anchorElement.click();
 
-      document.body.removeChild(anchorElement);
-      window.URL.revokeObjectURL(href);
-    })
-    .catch(error => console.log(error));
+        document.body.removeChild(anchorElement);
+        window.URL.revokeObjectURL(href);
+      })
+      .catch(error => console.log(error));
   };
 
   const deleteFiles = (url, id) => {
     axios.delete(`/api/files/${id}`)
-    .then(response => {
-      console.log('File delete');
-      fetchUploadedFiles();
-    })
-    .catch(error => console.log(error));
+      .then(response => {
+        console.log('File delete');
+        fetchUploadedFiles();
+      })
+      .catch(error => console.log(error));
   };
-  
+
   const renderUploadedFiles = () => {
     return uploadedFiles.map(file => (
       <tr key={file.id}>
         <td>{file.file}</td>
+        <td>
+          <button onClick={() => exploreFiles(file.file, file.id)} className="btn btn-info">Explore</button>
+        </td>
         <td>
           <button onClick={() => downloadFiles(file.file, file.id)} className="btn btn-success">Download</button>
         </td>
@@ -87,27 +100,47 @@ function App() {
     ));
   };
 
+  const renderFileContext = () => {
+    return <table className="table table-bordered mt-4">
+      <thead>
+        <tr>
+          <th scope="col">Explore Results:</th>
+        </tr>
+      </thead>
+      <tbody>
+        {Object.entries(fileContext).map(([key, value]) => (
+          <tr>
+            <td>{key}</td>
+            <td>{value}</td>
+          </tr>
+        ))}
+      </tbody>
+    </table >
+  };
+
   return (
     <div className="container-fluid">
-      <h1 className="text-center alert alert-danger mt-2">Upload Rosbag</h1>
+      <h1 className="text-center alert alert-danger mt-2">Rosbag Web Explorer</h1>
       <div className="row">
         <div className="col-md-7">
-          <h2 className="alert alert-success">Files I have uploaded:</h2>
+          <h2 className="alert alert-success">Uploaded Rosbags</h2>
           <table className="table table-bordered mt-4">
             <thead>
               <tr>
                 <th scope="col">File Title</th>
+                <th scope="col">Explore Rosbag</th>
                 <th scope="col">Download</th>
                 <th scope="col">Delete</th>
               </tr>
             </thead>
             <tbody>
               {renderUploadedFiles()}
+              {renderFileContext()}
             </tbody>
           </table>
         </div>
         <div className="col-md-4">
-          <h2 className="alert alert-success">File Upload Section</h2>
+          <h2 className="alert alert-success">Upload Section</h2>
           <form onSubmit={handleSubmit}>
             <input type="file" id="file" onChange={handleFileChange} className="form-control" required />
             <button className="btn btn-primary float-left mt-2">Submit</button>
