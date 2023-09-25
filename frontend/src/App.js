@@ -45,15 +45,15 @@ function App() {
   };
 
   const exploreFiles = (url, id) => {
-    axios.get(`/api/files/${id}/rosbag`)
+    axios.get(`/api/files/${id}/rosbag/`)
       .then(response => {
         setFileContext(response.data);
-        console.log(fileContext);
+        console.log(response.data);
       })
       .catch(error => console.log(error));
   };
 
-  const downloadFiles = (url, fileName) => {
+  const downloadFiles = (url, id) => {
     axios({
       method: 'get',
       url,
@@ -63,7 +63,7 @@ function App() {
         const href = window.URL.createObjectURL(response.data);
         const anchorElement = document.createElement('a');
         anchorElement.href = href;
-        anchorElement.download = fileName;
+        anchorElement.download = id;
 
         document.body.appendChild(anchorElement);
         anchorElement.click();
@@ -75,7 +75,7 @@ function App() {
   };
 
   const deleteFiles = (url, id) => {
-    axios.delete(`/api/files/${id}`)
+    axios.delete(`/api/files/${id}/`)
       .then(response => {
         console.log('File delete');
         fetchUploadedFiles();
@@ -101,26 +101,17 @@ function App() {
   };
 
   const renderFileContext = () => {
-    return <table className="table table-bordered mt-4">
-      <thead>
-        <tr>
-          <th scope="col">Explore Results:</th>
-        </tr>
-      </thead>
-      <tbody>
-        {Object.entries(fileContext).map(([key, value]) => (
-          <tr>
-            <td>{key}</td>
-            <td>{value}</td>
-          </tr>
-        ))}
-      </tbody>
-    </table >
+    return <tbody>{Object.entries(fileContext).map(([key, value]) => (
+      <tr key={key}>
+        <th>{key}</th>
+        <td>{value}</td>
+      </tr>
+    ))}</tbody>
   };
 
   return (
     <div className="container-fluid">
-      <h1 className="text-center alert alert-danger mt-2">Rosbag Web Explorer</h1>
+      <h1 className="text-center alert alert-primary mt-2">Rosbag Web Explorer</h1>
       <div className="row">
         <div className="col-md-7">
           <h2 className="alert alert-success">Uploaded Rosbags</h2>
@@ -135,8 +126,15 @@ function App() {
             </thead>
             <tbody>
               {renderUploadedFiles()}
-              {renderFileContext()}
             </tbody>
+          </table>
+          <table className="table table-bordered mt-4">
+            <thead>
+              <tr>
+                <th scope="col">Explore Results</th>
+              </tr>
+            </thead>
+            {renderFileContext()}
           </table>
         </div>
         <div className="col-md-4">

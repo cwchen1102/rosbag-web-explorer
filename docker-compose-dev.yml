@@ -28,7 +28,7 @@ services:
       - "8000:8000"
     restart: always
     entrypoint: ./docker-entrypoint.sh
-    command: uwsgi --ini uwsgi.ini
+    command: uwsgi --ini uwsgi-dev.ini
     environment:
       - PGUSER=postgres
       - PGHOST=postgres
