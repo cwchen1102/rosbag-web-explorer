@@ -5,6 +5,7 @@ function App() {
   const [file, setFile] = useState(null);
   const [uploadedFiles, setUploadedFiles] = useState([]);
   const [fileContext, setFileContext] = useState({});
+  const [progress, setProgress] = useState(0);
 
   useEffect(() => {
     fetchUploadedFiles();
@@ -21,6 +22,7 @@ function App() {
   };
 
   const handleFileChange = (e) => {
+    setProgress(0);
     setFile(e.target.files[0]);
   };
 
@@ -35,13 +37,19 @@ function App() {
     axios.post(url, form_data, {
       headers: {
         'content-type': 'multipart/form-data'
-      }
+      }, onUploadProgress
     })
       .then(response => {
         console.log(response.data);
         fetchUploadedFiles();
       })
       .catch(error => console.log(error));
+  };
+
+  const onUploadProgress = event => {
+    const percentCompleted = Math.round((event.loaded * 100) / event.total);
+    setProgress(percentCompleted);
+    console.log('onUploadProgress', percentCompleted);
   };
 
   const exploreFiles = (url, id) => {
@@ -140,7 +148,10 @@ function App() {
         <div className="col-md-4">
           <h2 className="alert alert-success">Upload Section</h2>
           <form onSubmit={handleSubmit}>
-            <input type="file" id="file" onChange={handleFileChange} className="form-control" required />
+            <input type="file" id="file" onInput={handleFileChange} className="form-control" required />
+            <div class="progress">
+              <div class="progress-bar" role="progressbar" style={{ width: progress + "%" }} aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">{`${progress}%`}</div>
+            </div>
             <button className="btn btn-primary float-left mt-2">Submit</button>
           </form>
         </div>
