@@ -176,7 +176,7 @@ function App() {
           <table className="table table-bordered mt-4">
             <thead>
               <tr>
-                <th scope="col">File Title</th>
+                <th scope="col">File Path</th>
                 <th scope="col">Explore Rosbag</th>
                 <th scope="col">Download</th>
                 <th scope="col">Delete</th>
