@@ -3,6 +3,7 @@ import axios from 'axios';
 
 function App() {
   const [file, setFile] = useState(null);
+  const [fileStatus, setFileStatus] = useState(null);
   const [uploadedFiles, setUploadedFiles] = useState([]);
   const [fileContext, setFileContext] = useState({});
   const [progress, setProgress] = useState(0);
@@ -30,20 +31,26 @@ function App() {
     e.preventDefault();
     console.log(file);
 
-    const form_data = new FormData();
-    form_data.append('file', file, file.name);
-
-    const url = '/api/files/';
-    axios.post(url, form_data, {
-      headers: {
-        'content-type': 'multipart/form-data'
-      }, onUploadProgress
-    })
-      .then(response => {
-        console.log(response.data);
-        fetchUploadedFiles();
+    const isRosbag = file.name.toLowerCase().endsWith('.bag');
+    if (isRosbag) {
+      setFileStatus(null);
+      const form_data = new FormData();
+      form_data.append('file', file, file.name);
+  
+      const url = '/api/files/';
+      axios.post(url, form_data, {
+        headers: {
+          'content-type': 'multipart/form-data'
+        }, onUploadProgress
       })
-      .catch(error => console.log(error));
+        .then(response => {
+          console.log(response.data);
+          fetchUploadedFiles();
+        })
+        .catch(error => console.log(error));
+    } else {
+      setFileStatus('Fail to submit. Please choose a rosbag file.');
+    }
   };
 
   const onUploadProgress = event => {
@@ -149,9 +156,10 @@ function App() {
           <h2 className="alert alert-success">Upload Section</h2>
           <form onSubmit={handleSubmit}>
             <input type="file" id="file" onInput={handleFileChange} className="form-control" required />
-            <div class="progress">
-              <div class="progress-bar" role="progressbar" style={{ width: progress + "%" }} aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">{`${progress}%`}</div>
+            <div className="progress">
+              <div className="progress-bar" role="progressbar" style={{ width: progress + "%" }} aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">{`${progress}%`}</div>
             </div>
+            <div>{fileStatus}</div>
             <button className="btn btn-primary float-left mt-2">Submit</button>
           </form>
         </div>
