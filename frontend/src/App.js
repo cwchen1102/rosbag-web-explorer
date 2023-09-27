@@ -116,24 +116,82 @@ function App() {
   };
 
   const renderFileContext = () => {
-    return <tbody>{Object.entries(fileContext).map(([key, value]) => (
-      <tr key={key}>
-        <th>{key}</th>
-        <td>{value}</td>
-      </tr>
-    ))}</tbody>
+    const renderList = (value) => {
+      return value.map((v, index) => (
+        <tr key={index}>
+          <td>{v.topic}</td>
+          <td>{v.msg_type}</td>
+          <td>{v.message_count}</td>
+          <td>{v.connections}</td>
+          <td>{v.frequency}</td>
+        </tr>
+      ));
+    };
+
+    const renderData = (key, value) => {
+      if (Array.isArray(value)) {
+        return (
+          <tr key={key}>
+            <th>{key}</th>
+            <td>
+              <table className="table table-bordered">
+                <thead>
+                  <tr>
+                    <th scope="col">Topic Name</th>
+                    <th scope="col">Messsage Type</th>
+                    <th scope="col">Message Count</th>
+                    <th scope="col">Connections</th>
+                    <th scope="col">Frequency</th>
+                  </tr>
+                </thead>
+                <tbody>{renderList(value)}</tbody>
+              </table>
+            </td>
+          </tr>
+        );
+      } else if (typeof value === 'object') {
+        return (
+          <tr key={key}>
+            <th>{key}</th>
+            <td>
+              <table className="table table-bordered">
+                <tbody>{renderFileContext(value)}</tbody>
+              </table>
+            </td>
+          </tr>
+        );
+      } else {
+        return (
+          <tr key={key}>
+            <th>{key}</th>
+            <td>{value}</td>
+          </tr>
+        );
+      }
+    };
+
+    return (
+      <tbody>
+        {Object.entries(fileContext).map(([key, value]) => (
+          renderData(key, value)
+        ))}
+      </tbody>
+    );
   };
+
+
+
 
   return (
     <div className="container-fluid">
       <h1 className="text-center alert alert-primary mt-2">Rosbag Web Explorer</h1>
       <div className="row">
-        <div className="col-md-7">
+        <div className="col-md-8">
           <h2 className="alert alert-success">Uploaded Rosbags</h2>
           <table className="table table-bordered mt-4">
             <thead>
               <tr>
-                <th scope="col">File Title</th>
+                <th scope="col">File Path</th>
                 <th scope="col">Explore Rosbag</th>
                 <th scope="col">Download</th>
                 <th scope="col">Delete</th>
