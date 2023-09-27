@@ -56,7 +56,6 @@ function App() {
   const onUploadProgress = event => {
     const percentCompleted = Math.round((event.loaded * 100) / event.total);
     setProgress(percentCompleted);
-    console.log('onUploadProgress', percentCompleted);
   };
 
   const exploreFiles = (url, id) => {
