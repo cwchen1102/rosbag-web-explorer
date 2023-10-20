@@ -42,7 +42,7 @@ Here is the AWS services we are going to use:
 
 Follow the steps to set up AWS services:
 
-[AWS Setup](https://www.notion.so/AWS-Setup-3627e52fff4344f88f3a21d26559f7b9?pvs=21)
+[AWS Setup](https://drive.google.com/file/d/1_SQole24pezvTxm_Cu_apKHti3Sz5XXE/view?usp=share_link)
 
 ## Github Actions
 
@@ -50,4 +50,4 @@ GitHub Actions is a continuous integration and continuous delivery (CI/CD) platf
 
 Follow the steps to set up Github Actions
 
-[Github Actions **Setup**](https://www.notion.so/Github-Actions-Setup-e8beb82fc6ad40d99667431098ec4d70?pvs=21)
+[Github Actions Setup](https://drive.google.com/file/d/1oOACOmG4SEXDlY6MMLRGHUDokHTQzpY5/view?usp=share_link)
