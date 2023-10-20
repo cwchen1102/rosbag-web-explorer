@@ -2,6 +2,7 @@
 
 # Introduction
 <img src="https://github.com/cwchen1102/rosbag-web-explorer/blob/master/Demo.gif" alt="image" width="70%" height="auto">
+
 **Rosbag Web Explorer** is a web application that offers users a user-friendly interface for effortlessly exploring the details of rosbags on the internet. It streamlines the process of launching ROS on a local machine, enabling users to access and review rosbags from anywhere and at any time.
 
 **Rosbag Web Explorer consists of multiple containers running within Docker.** These containers can be categorized into four distinct components as follows:
