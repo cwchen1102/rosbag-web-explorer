@@ -169,9 +169,7 @@ To apply security groups to Elastic Beanstalk, follow these steps:
 
 ### 6.1 Set Elastic Beanstalk Environment Variables
 
-To set Elastic Beanstalk environment variables, follow these steps
-
-:
+To set Elastic Beanstalk environment variables, follow these steps:
 
 1. Go to the AWS Management Console and use Find Services to search for Elastic Beanstalk.
 2. Click "Environments" in the left sidebar.
