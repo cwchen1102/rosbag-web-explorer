@@ -1,11 +1,12 @@
 name: Deploy Explorer Docker
 on:
   push:
+    paths-ignore:
+    - 'README.md'
+    - '**/README.md'
     branches:
       - master
-    paths-ignore:
-      - 'README.md'
-      - '**/README.md'
+    
 jobs:
   build:
     runs-on: ubuntu-latest
