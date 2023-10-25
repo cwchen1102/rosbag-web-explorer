@@ -17,6 +17,8 @@ The Docker Compose file serves a vital role in activating multiple containers. I
 - `docker-compose-dev.yml`: for local machine development.
 - `docker-compose.yml`: for deployment on AWS.
 
+# Get Started
+
 To develop Rosbag Web Explorer on your local machine, please follows the steps:
 
 1. Install Docker
